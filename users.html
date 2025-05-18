@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Users - Safety Pilot</title>
+   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="scorestyle.css" />
+  
+</head>
+<body>
+  <header>
+    <h1>Safety Pilot</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+         <li><a href="scoreboard.html">Scoreboard</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h2>User List</h2>
+      <p id="status">Connecting to Supabase...</p>
+
+      <input type="text" id="searchInput" placeholder="Search by name..." />
+
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Created At</th>
+          </tr>
+        </thead>
+        <tbody id="users-body">
+          <!-- Filled dynamically -->
+        </tbody>
+      </table>
+
+      <div style="margin-top: 10px;">
+        <button id="prevBtn">Previous</button>
+        <span id="pageInfo"></span>
+        <button id="nextBtn">Next</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Safety Pilot. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const SUPABASE_URL = 'https://schylceelekdenhwddjc.supabase.co/rest/v1/users';
+    const SUPABASE_API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNjaHlsY2VlbGVrZGVuaHdkZGpjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc0ODI3MDYsImV4cCI6MjA2MzA1ODcwNn0.-jqJqoP5o7ddXC2I3N5LbXct-i0GyM7u0RR5OVqQLAg';
+
+    const statusEl = document.getElementById('status');
+    const tbody = document.getElementById('users-body');
+    const searchInput = document.getElementById('searchInput');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const pageInfo = document.getElementById('pageInfo');
+
+    let usersData = [];
+    let currentPage = 1;
+    const rowsPerPage = 10;
+
+    function renderTable(data) {
+      const start = (currentPage - 1) * rowsPerPage;
+      const paginatedData = data.slice(start, start + rowsPerPage);
+
+      tbody.innerHTML = '';
+      paginatedData.forEach(user => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${user.id}</td>
+          <td>${user.name}</td>
+          <td>${new Date(user.created_at).toLocaleString()}</td>
+        `;
+        tbody.appendChild(row);
+      });
+
+      const totalPages = Math.ceil(data.length / rowsPerPage);
+      pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+      prevBtn.disabled = currentPage === 1;
+      nextBtn.disabled = currentPage === totalPages || totalPages === 0;
+    }
+
+    function filterAndRender() {
+      const query = searchInput.value.toLowerCase();
+      const filtered = usersData.filter(user => 
+        user.name && user.name.toLowerCase().includes(query)
+      );
+      currentPage = 1;
+      renderTable(filtered);
+    }
+
+    fetch(SUPABASE_URL, {
+      method: 'GET',
+      headers: {
+        'apikey': SUPABASE_API_KEY,
+        'Authorization': `Bearer ${SUPABASE_API_KEY}`,
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => {
+      if (!response.ok) throw new Error('Failed to connect');
+      return response.json();
+    })
+    .then(data => {
+      statusEl.textContent = '✅ Successfully connected to Supabase.';
+      usersData = data;
+      renderTable(usersData);
+    })
+    .catch(error => {
+      statusEl.textContent = '❌ Failed to connect to Supabase.';
+      console.error(error);
+    });
+
+    searchInput.addEventListener('input', filterAndRender);
+
+    prevBtn.addEventListener('click', () => {
+      if (currentPage > 1) {
+        currentPage--;
+        filterAndRender();
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      const query = searchInput.value.toLowerCase();
+      const filtered = usersData.filter(user => 
+        user.name && user.name.toLowerCase().includes(query)
+      );
+      if (currentPage * rowsPerPage < filtered.length) {
+        currentPage++;
+        renderTable(filtered);
+      }
+    });
+  </script>
+</body>
+</html>

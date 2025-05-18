@@ -1,0 +1,157 @@
+/* style.css */
+
+/* Reset some default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Body and background */
+  body {
+    background-color: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
+  }
+  
+  /* Container for main content */
+  .container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+  }
+  
+  /* Header and Navigation */
+  header {
+    background-color: #004080;
+    padding: 15px 0;
+    margin-bottom: 20px;
+    color: white;
+  }
+  
+  header h1 {
+    text-align: center;
+    font-weight: 700;
+  }
+  
+  nav {
+    margin-top: 10px;
+    text-align: center;
+  }
+  
+  nav a {
+    display: inline-block;
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: 600;
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  nav a:hover,
+  nav a.active {
+    background-color: #0073e6;
+  }
+  
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 15px 0;
+    margin-top: 30px;
+    font-size: 0.9rem;
+    color: #666;
+    border-top: 1px solid #ddd;
+  }
+  
+  /* Headings */
+  h2 {
+    color: #004080;
+    margin-bottom: 15px;
+  }
+  
+  /* Paragraphs */
+  p {
+    margin-bottom: 15px;
+  }
+  
+  /* Scoreboard table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+  }
+  
+  table th, table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  table th {
+    background-color: #004080;
+    color: white;
+    font-weight: 600;
+  }
+  
+  table tr:nth-child(even) {
+    background-color: #f2f8ff;
+  }
+  
+  /* Form styling for Contact Us page */
+  form {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  
+  form input[type="text"],
+  form input[type="email"],
+  form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    resize: vertical;
+  }
+  
+  form textarea {
+    height: 120px;
+  }
+  
+  form button {
+    background-color: #004080;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  form button:hover {
+    background-color: #0073e6;
+  }
+  
+  /* Responsive */
+  @media (max-width: 600px) {
+    nav a {
+      margin: 5px 10px;
+      display: block;
+    }
+  }
+  
